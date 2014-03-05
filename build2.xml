@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<project name="MarketClient" basedir = "." default="archive" >
+	<property name="src" value="src" />
+	<property name="classes" value="bin/classes" />
+	<property name = "target.dir" value = "dist"/>
+	<property name = "lib.dir" value = "lib"/>
+	
+	<path   id= "compile.classpath"> 
+        <pathelement   path   = "${basedir}/lib/appframework-1.0.3.jar "/> 
+        <pathelement   path   = "${basedir}/lib/swing-worker-1.1.jar "/> 
+	</path> 
+	
+	<target name="init">
+		<mkdir dir="${classes}" />
+		<mkdir dir="dist" />
+	</target>
+	
+	<target name="compile" depends="init" >
+		<javac srcdir="${src}" destdir="${classes}" 
+			includeantruntime="on">
+			<compilerarg line="-encoding UTF-8 "/>
+			<classpath  refid= "compile.classpath "/>
+		</javac>
+	</target>
+	
+	<target name="archive" depends="compile" >
+		 <pathconvert property="mf.classpath" pathsep=" ">
+             <path refid="compile.classpath" />
+             <flattenmapper />
+		</pathconvert>
+		
+		<jar destfile="dist/project.jar" basedir="${classes}" >
+			
+			<manifest>
+				<attribute name="Main-Class" value="mscs.view.ApplecationRunner"/>
+	            <attribute name="Class-Path" value="${mf.classpath} "/>
+	
+	        </manifest>
+		</jar>
+
+	</target>
+	
+	<target name="clean" depends="init">
+	</target>
+</project>
